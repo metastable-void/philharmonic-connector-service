@@ -37,6 +37,7 @@ fn wave_a_claims() -> ConnectorTokenClaims {
     ConnectorTokenClaims {
         iss: "lowerer.main".to_owned(),
         exp: UnixMillis(1_924_992_000_000),
+        iat: UnixMillis(1_924_991_880_000),
         kid: "lowerer.main-2026-04-22-3c8a91d0".to_owned(),
         realm: "llm".to_owned(),
         tenant: Uuid::parse_str("11111111-2222-4333-8444-555555555555")
@@ -137,8 +138,11 @@ fn positive_vector_verifies_and_returns_expected_context() {
         context.config_uuid,
         Uuid::parse_str("bbbbbbbb-cccc-4ddd-8eee-ffffffffffff").expect("test UUID must be valid")
     );
-    assert_eq!(context.issued_at, now);
+    // Since connector-common 0.2.0, issued_at is populated from the
+    // signed `iat` claim (mint time), not `now` (verify time).
+    assert_eq!(context.issued_at, UnixMillis(1_924_991_880_000));
     assert_eq!(context.expires_at, UnixMillis(1_924_992_000_000));
+    let _ = now; // keep binding in scope for other tests
 }
 
 #[test]

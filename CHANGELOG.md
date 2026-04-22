@@ -22,6 +22,11 @@ this crate adheres to
 - Added known-answer tests for Wave A positive vector plus 10 negative
   vectors asserting exact error variants.
 - Added README usage documentation.
+- Bump `philharmonic-connector-common` pin `"0.1"` → `"0.2"`. Picks up the
+  new `iat` claim on `ConnectorTokenClaims`; `ConnectorCallContext.issued_at`
+  is now populated from `claims.iat` (mint time) instead of `now` (verify
+  time), closing the Wave A Gate-2 follow-up. `build_call_context` drops
+  the `now` parameter and is now pure in the claim set.
 
 ## [0.0.0]
 

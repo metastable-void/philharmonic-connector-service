@@ -125,5 +125,5 @@ pub fn verify_token_with_limit(
         });
     }
 
-    Ok(build_call_context(&claims, now))
+    Ok(build_call_context(&claims))
 }
