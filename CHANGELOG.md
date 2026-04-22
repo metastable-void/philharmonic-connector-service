@@ -9,9 +9,19 @@ this crate adheres to
 
 ## [Unreleased]
 
-Implementation pending. See the
-[Philharmonic workspace ROADMAP](https://github.com/metastable-void/philharmonic-workspace/blob/main/ROADMAP.md)
-for the phase that populates this crate.
+### Added
+
+- Added `MintingKeyEntry` and `MintingKeyRegistry` for key-id lookup with
+  key validity windows.
+- Added `verify_token` / `verify_token_with_limit` implementing the
+  approved 11-step verification order for COSE_Sign1 connector tokens.
+- Added `MAX_PAYLOAD_BYTES` default ceiling (1 MiB) and explicit
+  payload-size rejection before hashing.
+- Added `TokenVerifyError` taxonomy for all rejection modes in the
+  verification path.
+- Added known-answer tests for Wave A positive vector plus 10 negative
+  vectors asserting exact error variants.
+- Added README usage documentation.
 
 ## [0.0.0]
 
