@@ -42,9 +42,6 @@ doesn't consume CPU.
 
 ## What's out of scope
 
-- Payload **decryption** (COSE_Encrypt0, hybrid ML-KEM-768 + X25519
-  KEM). Wave A ships only the token-verify path; the decrypt path
-  lands with Wave B and will share this same crate.
 - HTTP framing and response serialization. The bin crate wraps this
   library (its own binary entry point, its own router, its own TLS
   termination).
