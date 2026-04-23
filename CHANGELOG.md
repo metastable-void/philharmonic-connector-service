@@ -27,6 +27,19 @@ this crate adheres to
   is now populated from `claims.iat` (mint time) instead of `now` (verify
   time), closing the Wave A Gate-2 follow-up. `build_call_context` drops
   the `now` parameter and is now pure in the claim set.
+- Added Wave B `RealmPrivateKeyEntry` and `RealmPrivateKeyRegistry` for
+  realm-scoped hybrid-KEM private key lookup with validity-window checks.
+- Added Wave B `decrypt_payload` implementing approved steps 12/12a/13/14/15
+  (strict COSE_Encrypt0/header validation, registry checks, hybrid decapsulation,
+  AAD-bound AES-256-GCM decrypt, inner-realm assertion).
+- Added `verify_and_decrypt` / `verify_and_decrypt_with_limit` APIs while
+  preserving existing token-only `verify_token` surfaces.
+- Extended `TokenVerifyError` with Wave B-specific rejection variants:
+  malformed encrypted payload, realm key lookup/window/realm mismatch,
+  decryption failure folding, and inner realm mismatch.
+- Added Wave B positive vectors, 15 negative-path vector tests with exact
+  variant assertions, and an end-to-end Wave A × Wave B composition roundtrip
+  test asserting byte-for-byte vector equality.
 
 ## [0.0.0]
 

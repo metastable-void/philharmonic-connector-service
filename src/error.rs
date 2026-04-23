@@ -46,4 +46,32 @@ pub enum TokenVerifyError {
     /// Token realm did not match this service realm.
     #[error("realm mismatch: expected '{expected}', found '{found}'")]
     RealmMismatch { expected: String, found: String },
+
+    /// Encrypted payload COSE/CBOR framing or protected headers were malformed.
+    #[error("malformed encrypted payload")]
+    EncryptedPayloadMalformed,
+
+    /// No realm private key was registered for the protected-header kid.
+    #[error("unknown realm key id '{kid}'")]
+    UnknownRealmKid { kid: String },
+
+    /// Realm private key exists but is not valid at `now`.
+    #[error("realm key is outside validity window at {now:?}: [{not_before:?}, {not_after:?})")]
+    RealmKeyOutOfWindow {
+        now: UnixMillis,
+        not_before: UnixMillis,
+        not_after: UnixMillis,
+    },
+
+    /// Realm private key entry is registered under a different realm.
+    #[error("realm key realm mismatch: expected '{expected}', found '{found}'")]
+    RealmKeyRealmMismatch { expected: String, found: String },
+
+    /// Hybrid-KEM decapsulation, AAD binding, or AEAD tag verification failed.
+    #[error("encrypted payload decryption failed")]
+    DecryptionFailed,
+
+    /// Inner decrypted payload `realm` field did not match token realm.
+    #[error("inner payload realm mismatch: expected '{expected}', found '{found}'")]
+    InnerRealmMismatch { expected: String, found: String },
 }

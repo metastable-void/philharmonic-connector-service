@@ -4,11 +4,30 @@ use philharmonic_connector_common::{ConnectorCallContext, ConnectorTokenClaims};
 use philharmonic_types::UnixMillis;
 use sha2::{Digest, Sha256};
 use subtle::ConstantTimeEq;
+use zeroize::Zeroizing;
 
-use crate::{MintingKeyRegistry, TokenVerifyError, context::build_call_context};
+use crate::{
+    MintingKeyRegistry, RealmPrivateKeyRegistry, TokenVerifyError, context::build_call_context,
+    decrypt::decrypt_payload,
+};
 
 /// Default maximum accepted payload size in bytes (1 MiB).
 pub const MAX_PAYLOAD_BYTES: usize = 1_048_576;
+
+#[derive(Debug)]
+struct VerifiedToken {
+    claims: ConnectorTokenClaims,
+    context: ConnectorCallContext,
+}
+
+/// Verified connector call metadata plus decrypted payload bytes.
+#[derive(Debug)]
+pub struct VerifiedDecryptedPayload {
+    /// Verified connector call context derived from token claims.
+    pub context: ConnectorCallContext,
+    /// Decrypted payload plaintext bytes.
+    pub plaintext: Zeroizing<Vec<u8>>,
+}
 
 /// Verify a connector authorization token using the default payload-size limit.
 pub fn verify_token(
@@ -37,6 +56,78 @@ pub fn verify_token_with_limit(
     now: UnixMillis,
     max_payload_bytes: usize,
 ) -> Result<ConnectorCallContext, TokenVerifyError> {
+    verify_token_internal(
+        cose_bytes,
+        payload_bytes,
+        service_realm,
+        registry,
+        now,
+        max_payload_bytes,
+    )
+    .map(|verified| verified.context)
+}
+
+/// Verify Wave A token checks and decrypt Wave B payload checks in one call.
+pub fn verify_and_decrypt(
+    token_cose_bytes: &[u8],
+    encrypted_payload_bytes: &[u8],
+    service_realm: &str,
+    minting_registry: &MintingKeyRegistry,
+    realm_registry: &RealmPrivateKeyRegistry,
+    now: UnixMillis,
+) -> Result<VerifiedDecryptedPayload, TokenVerifyError> {
+    verify_and_decrypt_with_limit(
+        token_cose_bytes,
+        encrypted_payload_bytes,
+        service_realm,
+        minting_registry,
+        realm_registry,
+        now,
+        MAX_PAYLOAD_BYTES,
+    )
+}
+
+/// Verify + decrypt with caller-specified payload-size limit.
+pub fn verify_and_decrypt_with_limit(
+    token_cose_bytes: &[u8],
+    encrypted_payload_bytes: &[u8],
+    service_realm: &str,
+    minting_registry: &MintingKeyRegistry,
+    realm_registry: &RealmPrivateKeyRegistry,
+    now: UnixMillis,
+    max_payload_bytes: usize,
+) -> Result<VerifiedDecryptedPayload, TokenVerifyError> {
+    let verified = verify_token_internal(
+        token_cose_bytes,
+        encrypted_payload_bytes,
+        service_realm,
+        minting_registry,
+        now,
+        max_payload_bytes,
+    )?;
+
+    let plaintext = decrypt_payload(
+        encrypted_payload_bytes,
+        realm_registry,
+        service_realm,
+        &verified.claims,
+        now,
+    )?;
+
+    Ok(VerifiedDecryptedPayload {
+        context: verified.context,
+        plaintext,
+    })
+}
+
+fn verify_token_internal(
+    cose_bytes: &[u8],
+    payload_bytes: &[u8],
+    service_realm: &str,
+    registry: &MintingKeyRegistry,
+    now: UnixMillis,
+    max_payload_bytes: usize,
+) -> Result<VerifiedToken, TokenVerifyError> {
     // 1. Parse COSE_Sign1.
     let sign1 = CoseSign1::from_slice(cose_bytes).map_err(|_| TokenVerifyError::Malformed)?;
 
@@ -125,5 +216,7 @@ pub fn verify_token_with_limit(
         });
     }
 
-    Ok(build_call_context(&claims))
+    let context = build_call_context(&claims);
+
+    Ok(VerifiedToken { claims, context })
 }
