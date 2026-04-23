@@ -1,6 +1,6 @@
 [package]
 name = "philharmonic-connector-service"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2024"
 rust-version = "1.88"
 license = "Apache-2.0 OR MPL-2.0"
@@ -28,7 +28,7 @@ zeroize = { version = "1", features = ["derive"] }
 
 [dev-dependencies]
 hex = "0.4"
-philharmonic-connector-client = "0.0.0"
+philharmonic-connector-client = "0.1"
 
 [profile.release]
 opt-level = 3
