@@ -13,7 +13,7 @@ use philharmonic_types::{Sha256, UnixMillis, Uuid};
 use secrecy::{ExposeSecret, SecretBox};
 use serde::{Deserialize, Serialize};
 use x25519_dalek::PublicKey;
-use zeroize::Zeroizing;
+use zeroize::{Zeroize, Zeroizing};
 
 use crate::{RealmPrivateKeyRegistry, TokenVerifyError};
 
@@ -75,15 +75,14 @@ pub fn decrypt_payload(
     ikm[..KEM_SS_LEN].copy_from_slice(&kem_ss[..]);
     ikm[KEM_SS_LEN..].copy_from_slice(&ecdh_ss[..]);
 
-    let (prk, hkdf) = Hkdf::<sha2::Sha256>::extract(Some(b""), &ikm[..]);
-    let mut prk_bytes = Zeroizing::new([0_u8; AEAD_KEY_LEN]);
-    prk_bytes.copy_from_slice(prk.as_ref());
+    let (_, hkdf) = Hkdf::<sha2::Sha256>::extract(Some(b""), &ikm[..]);
 
     let mut aead_key_bytes = [0_u8; AEAD_KEY_LEN];
     hkdf.expand(HKDF_INFO, &mut aead_key_bytes)
         .map_err(|_| TokenVerifyError::DecryptionFailed)?;
 
     let aead_key = SecretBox::new(Box::new(aead_key_bytes));
+    aead_key_bytes.zeroize();
     let external_aad = compute_external_aad_digest(claims)?;
 
     let plaintext = parsed
