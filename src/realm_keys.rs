@@ -10,8 +10,8 @@ use zeroize::Zeroizing;
 pub struct RealmPrivateKeyEntry {
     /// ML-KEM-768 decapsulation key bytes (2400 bytes, zeroized on drop).
     pub kem_sk: Zeroizing<[u8; 2400]>,
-    /// X25519 static private key bytes.
-    pub ecdh_sk: StaticSecret,
+    /// X25519 static private key (zeroized on drop).
+    pub ecdh_sk: Zeroizing<StaticSecret>,
     /// Realm that owns this key entry.
     pub realm: RealmId,
     /// Lower bound (inclusive) of this key's acceptance window.
