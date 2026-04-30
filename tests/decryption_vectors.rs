@@ -65,7 +65,7 @@ fn valid_realm_registry() -> RealmPrivateKeyRegistry {
         REALM_KID.to_owned(),
         RealmPrivateKeyEntry {
             kem_sk: Zeroizing::new(bytes_2400(WAVE_B_MLKEM_SECRET_HEX)),
-            ecdh_sk: StaticSecret::from(bytes_32(WAVE_B_X25519_REALM_SK_HEX)),
+            ecdh_sk: Zeroizing::new(StaticSecret::from(bytes_32(WAVE_B_X25519_REALM_SK_HEX))),
             realm: RealmId::new("llm"),
             not_before: UnixMillis(1_700_000_000_000),
             not_after: UnixMillis(1_950_000_000_000),
@@ -282,7 +282,7 @@ fn negative_09_realm_key_out_of_window() {
         REALM_KID.to_owned(),
         RealmPrivateKeyEntry {
             kem_sk: Zeroizing::new(bytes_2400(WAVE_B_MLKEM_SECRET_HEX)),
-            ecdh_sk: StaticSecret::from(bytes_32(WAVE_B_X25519_REALM_SK_HEX)),
+            ecdh_sk: Zeroizing::new(StaticSecret::from(bytes_32(WAVE_B_X25519_REALM_SK_HEX))),
             realm: RealmId::new("llm"),
             not_before: UnixMillis(1_700_000_000_000),
             not_after: UnixMillis(1_750_000_000_000),
@@ -315,7 +315,7 @@ fn negative_10_realm_key_realm_mismatch() {
         REALM_KID.to_owned(),
         RealmPrivateKeyEntry {
             kem_sk: Zeroizing::new(bytes_2400(WAVE_B_MLKEM_SECRET_HEX)),
-            ecdh_sk: StaticSecret::from(bytes_32(WAVE_B_X25519_REALM_SK_HEX)),
+            ecdh_sk: Zeroizing::new(StaticSecret::from(bytes_32(WAVE_B_X25519_REALM_SK_HEX))),
             realm: RealmId::new("sql"),
             not_before: UnixMillis(1_700_000_000_000),
             not_after: UnixMillis(1_950_000_000_000),
