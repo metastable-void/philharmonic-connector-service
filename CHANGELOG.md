@@ -9,6 +9,11 @@ this crate adheres to
 
 ## [Unreleased]
 
+## [0.2.1]
+
+- Added doc comments on error variant fields.
+- Moved crypto test vectors into crate-local `tests/vectors/`.
+
 ## [0.2.0]
 
 ## [0.1.0] - 2026-04-23
