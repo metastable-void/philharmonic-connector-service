@@ -97,7 +97,7 @@ fn verify_example(
   any signature work; the 1 MiB payload cap bounds the cost of a
   malicious large-payload replay.
 - Known-answer test vectors (positive + 10 negative) live under
-  [`docs/crypto-vectors/wave-a/`](../docs/crypto-vectors/wave-a/)
+  [`tests/vectors/wave-a/`](../tests/vectors/wave-a/)
   and are verified byte-for-byte by the test suite.
 - Design background:
   [`docs/design/11-security-and-cryptography.md`](../docs/design/11-security-and-cryptography.md),

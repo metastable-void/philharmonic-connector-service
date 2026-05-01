@@ -7,11 +7,10 @@ use philharmonic_connector_service::{
 };
 use philharmonic_types::{Sha256, Uuid};
 
-const SEED_HEX: &str = include_str!("../../docs/crypto-vectors/wave-a/wave_a_seed.hex");
-const PUBLIC_HEX: &str = include_str!("../../docs/crypto-vectors/wave-a/wave_a_public.hex");
-const PAYLOAD_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-a/wave_a_payload_plaintext.hex");
-const COSE_SIGN1_HEX: &str = include_str!("../../docs/crypto-vectors/wave-a/wave_a_cose_sign1.hex");
+const SEED_HEX: &str = include_str!("vectors/wave-a/wave_a_seed.hex");
+const PUBLIC_HEX: &str = include_str!("vectors/wave-a/wave_a_public.hex");
+const PAYLOAD_HEX: &str = include_str!("vectors/wave-a/wave_a_payload_plaintext.hex");
+const COSE_SIGN1_HEX: &str = include_str!("vectors/wave-a/wave_a_cose_sign1.hex");
 
 fn decode_hex_file(input: &str) -> Vec<u8> {
     hex::decode(input.trim()).expect("vector hex must decode")

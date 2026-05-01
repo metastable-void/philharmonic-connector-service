@@ -11,25 +11,17 @@ use philharmonic_connector_service::{
 use x25519_dalek::StaticSecret;
 use zeroize::Zeroizing;
 
-const WAVE_B_MLKEM_SECRET_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_mlkem_secret.hex");
-const WAVE_B_MLKEM_PUBLIC_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_mlkem_public.hex");
-const WAVE_B_X25519_REALM_SK_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_x25519_realm_sk.hex");
-const WAVE_B_X25519_REALM_PK_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_x25519_realm_pk.hex");
-const WAVE_B_X25519_EPH_SK_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_x25519_eph_sk.hex");
-const WAVE_B_MLKEM_ENCAPS_M_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_mlkem_encaps_m.hex");
-const WAVE_B_NONCE_HEX: &str = include_str!("../../docs/crypto-vectors/wave-b/wave_b_nonce.hex");
-const WAVE_B_PLAINTEXT_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_plaintext.hex");
-const WAVE_B_COSE_ENCRYPT0_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-b/wave_b_cose_encrypt0.hex");
+const WAVE_B_MLKEM_SECRET_HEX: &str = include_str!("vectors/wave-b/wave_b_mlkem_secret.hex");
+const WAVE_B_MLKEM_PUBLIC_HEX: &str = include_str!("vectors/wave-b/wave_b_mlkem_public.hex");
+const WAVE_B_X25519_REALM_SK_HEX: &str = include_str!("vectors/wave-b/wave_b_x25519_realm_sk.hex");
+const WAVE_B_X25519_REALM_PK_HEX: &str = include_str!("vectors/wave-b/wave_b_x25519_realm_pk.hex");
+const WAVE_B_X25519_EPH_SK_HEX: &str = include_str!("vectors/wave-b/wave_b_x25519_eph_sk.hex");
+const WAVE_B_MLKEM_ENCAPS_M_HEX: &str = include_str!("vectors/wave-b/wave_b_mlkem_encaps_m.hex");
+const WAVE_B_NONCE_HEX: &str = include_str!("vectors/wave-b/wave_b_nonce.hex");
+const WAVE_B_PLAINTEXT_HEX: &str = include_str!("vectors/wave-b/wave_b_plaintext.hex");
+const WAVE_B_COSE_ENCRYPT0_HEX: &str = include_str!("vectors/wave-b/wave_b_cose_encrypt0.hex");
 const WAVE_A_COMPOSITION_CLAIMS_CBOR_HEX: &str =
-    include_str!("../../docs/crypto-vectors/wave-a/wave_a_composition_claims.cbor.hex");
+    include_str!("vectors/wave-a/wave_a_composition_claims.cbor.hex");
 
 const REALM_KID: &str = "llm.default-2026-04-22-realmkey0";
 
