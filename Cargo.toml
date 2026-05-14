@@ -1,6 +1,6 @@
 [package]
 name = "philharmonic-connector-service"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2024"
 rust-version = "1.88"
 license = "Apache-2.0 OR MPL-2.0"
@@ -9,25 +9,25 @@ repository = "https://github.com/metastable-void/philharmonic-connector-service"
 description = "Service framework for per-realm Philharmonic connector binaries: token verification, payload decryption, Implementation-trait registry and dispatch."
 
 [dependencies]
-aes-gcm = "0.10"
-ciborium = "0.2"
-coset = "0.4"
-ed25519-dalek = "2"
-hkdf = "0.13"
-ml-kem = "0.2"
+aes-gcm = { version = "0.10", default-features = false, features = ["aes", "alloc"] }
+ciborium = { version = "0.2", default-features = false, features = ["std"] }
+coset = { version = "0.4", default-features = false, features = [] }
+ed25519-dalek = { version = "2", default-features = false, features = ["fast", "std", "zeroize"] }
+hkdf = { version = "0.13", default-features = false, features = [] }
+ml-kem = { version = "0.2", default-features = false, features = ["std"] }
 philharmonic-connector-common = "0.2"
 philharmonic-types = "0.3.5"
-secrecy = "0.10"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-sha2 = "0.11"
-subtle = "2"
-thiserror = "2"
-x25519-dalek = { version = "2", features = ["static_secrets"] }
-zeroize = { version = "1", features = ["derive"] }
+secrecy = { version = "0.10", default-features = false, features = [] }
+serde = { version = "1", default-features = false, features = ["derive", "std"] }
+serde_json = { version = "1", default-features = false, features = ["std"] }
+sha2 = { version = "0.11", default-features = false, features = ["alloc"] }
+subtle = { version = "2", default-features = false, features = [] }
+thiserror = { version = "2", default-features = false, features = ["std"] }
+x25519-dalek = { version = "2", default-features = false, features = ["alloc", "precomputed-tables", "static_secrets", "zeroize"] }
+zeroize = { version = "1", default-features = false, features = ["alloc", "derive"] }
 
 [dev-dependencies]
-hex = "0.4"
+hex = { version = "0.4", default-features = false, features = ["std"] }
 philharmonic-connector-client = "0.1"
 
 [profile.release]
